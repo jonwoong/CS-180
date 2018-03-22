@@ -1,0 +1,394 @@
+%%%%%%%%%% DOCUMENT STUFF %%%%%%%%%%
+
+\documentclass[11pt,letterpaper]{article}
+\usepackage{mathtools}
+\usepackage{datetime}
+\usepackage{setspace}
+\usepackage[margin=1in]{geometry}
+
+%%%%%%%%%% FORMATTING %%%%%%%%%%
+
+\newdate{date}{25}{01}{2017}
+\date{\displaydate{date}}
+\doublespacing
+\setcounter{secnumdepth}{0}
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+
+%%%%%%%%%% CONTENT %%%%%%%%%%
+
+%%%%% COVER PAGE %%%%%
+
+\begin{document}
+\title{CS 180: Homework 1}
+\author{
+	Jonathan Woong\\
+	804205763\\
+	Winter 2017\\
+	Discussion 1B}
+\maketitle
+\pagebreak
+
+%%%%% PROBLEM 1 %%%%%
+
+\section{Problem 1}
+Arrange the following in increasing order of asymptotic growth rate. For full credit
+it is enough to just give the order.
+\\\\
+(a) $f_{1}(n)=n^3$ \\
+(b) $f_{2}(n)=1000n^5/2$ \\
+(c) $f_{3}(n)=2^{3\sqrt{n}}$ \\
+(d) $f_{4}(n)=n(\log{n})^{1000}$ \\
+(e) $f_{5}(n)=2^{n\log{n}}$ \\
+(f) $f_{6}(n)=2^{(\log{n})^{0.9}}$
+
+\subsection{Answer}
+$
+f_{6}(n)=2^{(\log{n})^{0.9}} \\
+f_{3}(n)=2^{3\sqrt{n}} \\
+f_{5}(n)=2^{n\log{n}} \\
+f_{1}(n)=n^3 \\
+f_{2}(n)=1000n^5/2 \\
+f_{4}(n)=n(\log{n})^{1000}
+$
+
+\pagebreak
+
+%%%%% PROBLEM 2 %%%%%
+\section{Problem 2}
+Use Karatsuba’s algorithm to multiply the following two binary integers: 10110100 and
+10111101. Your entire calculations should be in binary and show all your work.
+
+\subsection{Answer}
+Karatsuba-multiply(10110100, 10111101, 8)\\
+$
+x = 10110100 \tab x_0 = 0100 \tab x_1 = 1011 \\
+y = 10111101 \tab y_0 = 1101 \tab y_1 = 1011 \\
+n = 8 \\
+m = \lceil n/2 \rceil = 8/2 = 4 \\
+x = 2^{m}x_1 + x_0 = 2^{4}(1011) + 0100 \\
+y = 2^{m}y_1 + y_0 = 2^{4}(1011) + 1101 \\ 
+t_1 = KM(x_1, y_1, m) = KM(1011, 1011, 4) = 121 = 1111001 \\
+t_0 = KM(x_0, y_0, m) = KM(0100, 1101, 4) = 52 = 110100 \\
+t_{10} = KM(x_1 + x_0, y_1 + y_0, m+1) = KM(1111, 11000,5) = 360 = 101101000\\
+RETURN \ 2^{2m}t_1 + 2^{m}(t_{10} - t_1 - t_0) + t_0 = 2^{8}(121) + 2^{4}(360-121-52) + 52 = 34020 = 1000010011100100
+$
+\\\\
+$
+t_1 = KM(1011, 1011, 4) \\
+x = 1011 \tab x_0 = 11 \tab x_1 = 10 \\
+y = 1011 \tab y_0 = 11 \tab y_1 = 10 \\
+n = 4 \\
+m = \lceil n/2 \rceil = 4/2 = 2 \\
+x = 2^{m}x_1 + x_0 = 2^{2}(10) + 11 \\
+y = 2^{m}y_1 + y_0 = 2^{2}(10) + 11 \\
+t_1' = KM(x_1, y_1, m) = KM(10, 10, 2) = 4 = 0100 \\
+t_0' = KM(x_0, y_0, m) = KM(11, 11, 2) = 9 = 01001 \\
+t_{10}' = KM(x_1 + x_0, y_1 + y_0, m+1) = KM(101, 101,3) = 25 = 11001 \\
+RETURN \ 2^{2m}t_1' + 2^{m}(t_{10}' - t_1' - t_0') + t_0' = 2^{4}(9) + 2^{2}(25-9-4) + 4 = 121 = 1111001 \\
+$
+\\
+$
+t_0 = KM(0100,1101,4) \\
+x = 1011 \tab x_0 = 00 \tab x_1 = 01 \\
+y = 1101 \tab y_0 = 01 \tab y_1 = 11 \\
+n = 4 \\
+m = \lceil n/2 \rceil = 4/2 = 2 \\
+x = 2^{m}x_1 + x_0 = 2^{2}(01) + 00 \\
+y = 2^{m}y_1 + y_0 = 2^{2}(11) + 01 \\
+t_1'' = KM(x_1, y_1, m) = KM(01, 11, 2) = 3 = 11\\
+t_0'' = KM(x_0, y_0, m) = KM(00, 01, 2) = 0 \\
+t_{10}'' = KM(x_1 + x_0, y_1 + y_0, m+1) = KM(001, 100,3) = 4 = 100 \\
+RETURN \ 2^{2m}t_1'' + 2^{m}(t_{10}'' - t_1'' - t_0'') + t_0'' = 2^{4}(3) + 2^{2}(4-3-0) + 0 = 52 = 110100 \\
+$
+\\
+$
+t_{10} = KM(01111, 11000, 5) \\
+x = 1111 \tab x_0 = 111 \tab x_1 = 01 \\
+y = 11000 \tab y_0 = 000 \tab y_1 = 11 \\
+n = 5 \\
+m = \lceil n/2 \rceil = \lceil 5/2 \rceil = 3 \\
+x = 2^{m}x_1 + x_0 = 2^{3}(01) + 111 \\
+y = 2^{m}y_1 + y_0 = 2^{3}(11) + 000 \\
+t_1''' = KM(x_1, y_1, m) = KM(001, 011, 3) = 3 = 11 \\
+t_0''' = KM(x_0, y_0, m) = KM(111, 000, 3) = 0 \\
+t_{10}''' = KM(x_1 + x_0, y_1 + y_0, m+1) = KM(1000, 0011,4) = 24 = 11000 \\
+RETURN \ 2^{2m}t_1''' + 2^{m}(t_{10}''' - t_1''' - t_0''') + t_0''' = 2^{6}(3) + 2^{3}(24-3-0) + 0 = 360 = 101101000 \\
+$
+\\
+$
+t_1' = KM(11,11,2) \\
+x = 11 \tab x_0 = 1 \tab x_1 = 1 \\
+y = 11 \tab y_0 = 1 \tab y_1 = 1 \\
+n = 2 \\
+m = \lceil n/2 \rceil = 2/2 = 1 \\
+x = 2^{m}x_1 + x_0 = 2^{1}(1) + 1 \\
+y = 2^{m}y_1 + x_0 = 2^{1}(1) + 1 \\
+t_{1}^4 = KM(x_1, y_1, m) = KM(1, 1, 1) = 1 \\
+t_{0}^4 = KM(x_0, y_0, m) = KM(1, 1, 1) = 1 \\
+t_{10}^4 = KM(x_1 + x_0, y_1 + y_0, m+1) = KM(10, 10, 2) = 4 \\
+RETURN \ 2^{2m}t_1^4 + 2^{m}(t_{10}^4 - t_1^4 - t_0^4) + t_0^4 = 2^{2}1 + 2^{1}(4 - 1 - 1) + 1 = 4 + 2(2) + 1 = 9 = 01001 \\
+$
+\\
+$
+t_0' = KM(10,10,2) \\
+x = 10 \tab x_0 = 0 \tab x_1 = 1 \\
+y = 10 \tab y_0 = 0 \tab y_1 = 1 \\
+n = 2 \\
+m = \lceil n/2 \rceil = 2/2 = 1 \\
+x = 2^{m}x_1 + x_0 = 2^{1}(1) + 0 \\
+y = 2^{m}y_1 + x_0 = 2^{1}(1) + 0 \\
+t_{1}^5 = KM(x_1, y_1, m) = KM(1, 1, 1) = 1 \\
+t_{0}^5 = KM(x_0, y_0, m) = KM(0, 0, 1) = 0 \\
+t_{10}^5 = KM(x_1 + x_0, y_1 + y_0, m) = KM(1, 1, 1) = 1 \\
+RETURN \ 2^{2m}t_1^5 + 2^{m}(t_{10}^5 - t_1^5 - t_0^5) + t_0^5 = 2^{2}1 + 2^{1}(1-1-0) + 0 = 4 = 0100 \\
+$
+\\
+$
+t_{10}' = KM(101,101,3) \\
+x = 0101 \tab x_0 = 01 \tab x_1 = 1 \\
+y = 0101 \tab y_0 = 01 \tab y_1 = 1 \\
+n = 4 \\ 
+m = \lceil n/2 \rceil = \lceil 3/2 \rceil = 2 \\ 
+x = 2^{m}x_1 + x_0 = 2^{2}(1) + 01 \\
+y = 2^{m}y_1 + x_0 = 2^{2}(1) + 01 \\
+t_{1}^6 = KM(x_1, y_1, m) = KM(01, 01, 2) = 1 \\
+t_{0}^6 = KM(x_0, y_0, m) = KM(01, 01, 2) = 1 \\
+t_{10}^6 = KM(x_1 + x_0, y_1 + y_0, m) = KM(10, 10, 2) = 4 \\
+RETURN \ 2^{2m}t_1^6 + 2^{m}(t_{10}^6 - t_1^6 - t_0^6) + t_0^6 = 2^{4}1 + 2^{2}(4-1-1) + 1 = 16 + 4(2) + 1 = 25 = 11001 \\
+$
+\\
+$
+t_1'' = KM(01,11,2) \\
+x = 01 \tab x_0 = 1 \tab x_1 = 0 \\
+y = 11 \tab y_0 = 1 \tab y_1 = 1 \\
+n = 2 \\ 
+m = \lceil n/2 \rceil = 2/2 = 1 \\
+x = 2^{m}x_1 + x_0 = 2^{1}(0) + 1 \\
+y = 2^{m}y_1 + x_0 = 2^{1}(1) + 1 \\
+t_{1}^7 = KM(x_1, y_1, m) = KM(0, 1, 1) = 0 \\
+t_{0}^7 = KM(x_0, y_0, m) = KM(1, 1, 1) = 1 \\
+t_{10}^7 = KM(x_1 + x_0, y_1 + y_0, m+1) = KM(01, 10, 2) = 2 = 10\\
+RETURN \ 2^{2m}t_1^7 + 2^{m}(t_{10}^7 - t_1^7 - t_0^7) + t_0^7 = 2^{2}(0) + 2^{1}(2 - 1 - 0) + 1 = 3 = 11 \\
+$
+\\
+$
+t_0'' = KM(00, 01, 2) \\
+x = 00 \tab x_0 = 0 \tab x_1 = 0 \\
+y = 01 \tab y_0 = 1 \tab y_1 = 0 \\
+n = 2 \\
+m = \lceil n/2 \rceil = 2/2 = 1 \\
+x = 2^{m}x_1 + x_0 = 2^{1}(0) + 0 \\
+y = 2^{m}y_1 + x_0 = 2^{1}(0) + 1 \\
+t_{1}^8 = KM(x_1, y_1, m) = KM(0, 0, 1) = 0 \\
+t_{0}^8 = KM(x_0, y_0, m) = KM(0, 1, 1) = 0 \\
+t_{10}^8 = KM(x_1 + x_0, y_1 + y_0, m) = KM(0, 1, 1) = 0 \\
+RETURN \ 2^{2m}t_1^8 + 2^{m}(t_{10}^8 - t_1^8 - t_0^8) + t_0^8 = 2^{2}0 + 2^{2}(0 - 0 - 0) + 0 = 0 \\
+$
+\\
+$
+t_{10}'' = KM(001, 100,3) \\ 
+x = 0001 \tab x_0 = 01 \tab x_1 = 0 \\
+y = 0100 \tab y_0 = 00 \tab y_1 = 1 \\
+n = 4 \\
+m = \lceil n/2 \rceil = \lceil 3/2 \rceil = 2 \\
+x = 2^{m}x_1 + x_0 = 2^{2}(0) + 01 \\
+y = 2^{m}y_1 + x_0 = 2^{2}(1) + 00 \\
+t_{1}^9 = KM(x_1, y_1, m) = KM(0, 1, 2) = 0 \\
+t_{0}^9 = KM(x_0, y_0, m) = KM(01, 00, 2) = 0 \\
+t_{10}^9 = KM(x_1 + x_0, y_1 + y_0, m) = KM(01, 01, 2) = 1 \\
+RETURN \ 2^{2m}t_1^9 + 2^{m}(t_{10}^9 - t_1^9 - t_0^9) + t_0^9  = 2^{4}(0) + 2^{2}(1 - 0 - 0) + 0 = 4 = 100 \\
+$
+\\
+$
+t_1''' = KM(001, 011, 3) \\
+x = 01 \tab x_0 = 01 \tab x_1 = 0 \\
+y = 11 \tab y_0 = 11 \tab y_1 = 0 \\
+n = 3 \\
+m = \lceil n/2 \rceil = \lceil 3/2 \rceil = 2 \\
+x = 2^{m}x_1 + x_0 = 2^{2}(0) + 01 \\
+y = 2^{m}y_1 + x_0 = 2^{2}(0) + 11 \\
+t_{1}^{10} = KM(x_1, y_1, m) = KM(00, 00, 2) = 0 \\
+t_{0}^{10} = KM(x_0, y_0, m) = KM(01, 11, 2) = 3 = 11 \\
+t_{10}^{10} = KM(x_1 + x_0, y_1 + y_0, m) = KM(01, 11, 2) = 3 = 11 \\
+RETURN \ 2^{2m}t_1^{10} + 2^{m}(t_{10}^{10} - t_1^{10} - t_0^{10}) + t_0^{10} = 2^{4}0 + 2^{2}(3-3-0) + 3 = 3\\
+$
+\\
+$
+t_0''' = KM(111, 000, 3) \\
+x = 111 \tab x_0 = 11 \tab x_1 = 1 \\
+y = 000 \tab y_0 = 00 \tab y_1 = 0 \\
+n = 2 \\
+m = \lceil n/2 \rceil = \lceil 3/2 \rceil = 2 \\
+x = 2^{m}x_1 + x_0 = 2^{1}(1) + 11 \\
+y = 2^{m}y_1 + x_0 = 2^{1}(0) + 00 \\
+t_{1}^{11} = KM(x_1, y_1, m) = KM(01, 00, 2) = 0 \\
+t_{0}^{11} = KM(x_0, y_0, m) = KM(11, 00, 2) = 0 \\
+t_{10}^{11} = KM(x_1 + x_0, y_1 + y_0, m) = KM(10, 00, 2) = 0\\
+RETURN \ 2^{2m}t_1^{11} + 2^{m}(t_{10}^{11} - t_1^{11} - t_0^{11}) + t_0^{11} = 2^{4}(0) + 2^{2}(0 - 0 - 0) + 0 = 0\\
+$
+\\
+$
+t_{10}''' = KM(1000, 0011,4) \\
+x = 1000 \tab x_0 = 00 \tab x_1 = 10 \\
+y = 0011 \tab y_0 = 11 \tab y_1 = 00 \\
+n = 4 \\
+m = \lceil n/2 \rceil = 4/2 = 2 \\
+x = 2^{m}x_1 + x_0 = 2^{2}(10) + 00 \\
+y = 2^{m}y_1 + x_0 = 2^{2}(00) + 11 \\
+t_{1}^{12} = KM(x_1, y_1, m) = KM(10, 00, 2) = 0 \\
+t_{0}^{12} = KM(x_0, y_0, m) = KM(00, 11, 2) = 0 \\
+t_{10}^{12} = KM(x_1 + x_0, y_1 + y_0, m) = KM(10, 11, 2) = 6 = 110 \\
+RETURN \ 2^{2m}t_1^{12} + 2^{m}(t_{10}^{12} - t_1^{12} - t_0^{12}) + t_0^{12} = 2^{4}(0) + 2^{2}(6-0-0) + 0 = 24 = 11000 \\
+$
+\\
+$
+t_{10}^4 = t_{10}^6 = KM(10, 10, 2) \\
+x = 10 \tab x_0 = 0 \tab x_1 = 1 \\
+y = 10 \tab y_0 = 0 \tab y_1 = 1 \\
+n = 2
+m = \lceil n/2 \rceil = 1 \\
+x = 2^{m}x_1 + x_0 = 2^{1}(1) + 0 \\
+y = 2^{m}y_1 + x_0 = 2^{1}(1) + 0 \\
+t_{1}^{13} = KM(x_1, y_1, m) = KM(1, 1, 1) = 1 \\
+t_{0}^{13} = KM(x_0, y_0, m) = KM(0, 0, 1) = 0 \\
+t_{10}^{13} = KM(x_1 + x_0, y_1 + y_0, m) = KM(1, 1, 1) = 1 \\
+RETURN \ 2^{2m}t_1^{13} + 2^{m}(t_{10}^{13} - t_1^{13} - t_0^{13}) + t_0^{13} = 2^{2}1 + 2^{2}(1 - 1 - 0) + 0 = 4 \\
+$
+\\
+$
+t_{1}^6 = t_{0}^6 = = t_{10}^9 = KM(01, 01, 2) \\
+x = 01 \tab x_0 = 1 \tab x_1 = 0 \\
+y = 01 \tab y_0 = 1 \tab y_1 = 0 \\
+n = 2 \\
+m = \lceil n/2 \rceil = 2/1 = 1 \\
+x = 2^{m}x_1 + x_0 = 2^{1}(0) + 1 \\
+y = 2^{m}y_1 + x_0 = 2^{1}(0) + 1 \\
+t_{1}^{14} = KM(x_1, y_1, m) = KM(0, 0, 1) = 0 \\
+t_{0}^{14} = KM(x_0, y_0, m) = KM(1, 1, 1) = 1 \\
+t_{10}^{14} = KM(x_1 + x_0, y_1 + y_0, m) = KM(1, 1, 1) = 1 \\
+RETURN \ 2^{2m}t_1^{14} + 2^{m}(t_{10}^{14} - t_1^{14} - t_0^{14}) + t_0^{14} = 2^{2}0 + 2^{1}(1 - 0 - 1) + 1 = 1 \\
+$
+\\
+$
+t_{10}^7 = t_{10}^17 = t_{10}^{19} = KM(01, 10, 2) \\
+x = 01 \tab x_0 = 1 \tab x_1 = 0 \\
+y = 10 \tab y_0 = 0 \tab y_1 = 1 \\
+n = 2 \\
+m = \lceil n/2 \rceil = 2/2 = 1 \\
+x = 2^{m}x_1 + x_0 = 2^{1}(0) + 1 \\
+y = 2^{m}y_1 + x_0 = 2^{1}(1) + 0 \\
+t_{1}^{15} = KM(x_1, y_1, m) = KM(0, 1, 1) = 0 \\
+t_{0}^{15} = KM(x_0, y_0, m) = KM(1, 0, 1) = 0 \\
+t_{10}^{15} = KM(x_1 + x_0, y_1 + y_0, m) = KM(1, 1, 1) = 1 \\
+RETURN \ 2^{2m}t_1^{15} + 2^{m}(t_{10}^{15} - t_1^{15} - t_0^{15}) + t_0^{15} = 2^{2}(0) + 2^{1}(1 - 0 - 0) + 0 = 2 = 10 \\
+$
+\\
+$
+t_{1}^9 = t_{0}^9 = t_{1}^{11} = t_{10}^{18} = t_{1}^{18} = KM(00, 01, 2) 
+x = 00 \tab x_0 = 0 \tab x_1 = 0 \\
+y = 01 \tab y_0 = 1 \tab y_1 = 0 \\
+n = 2 \\
+m = \lceil n/2 \rceil = 2/2 = 1 \\
+x = 2^{m}x_1 + x_0 = 2^{1}(0) + 0 \\
+y = 2^{m}y_1 + x_0 = 2^{1}(0) + 1 \\
+t_{1}^{16} = KM(x_1, y_1, m) = KM(0, 0, 1) = 0 \\
+t_{0}^{16} = KM(x_0, y_0, m) = KM(0, 1, 1) = 0 \\
+t_{10}^{16} = KM(x_1 + x_0, y_1 + y_0, m) = KM(0, 1, 1) = 0 \\
+RETURN \ 2^{2m}t_1^{16} + 2^{m}(t_{10}^{16} - t_1^{16} - t_0^{16}) + t_0^{16} = 2^{2}(0) + 2^{1}(0 - 0 - 0) + 0 = 2 = 0 \\
+$
+\\
+$
+t_{0}^{10} = t_{10}^{18} = KM(01, 11, 2) \\
+x = 01 \tab x_0 = 1 \tab x_1 = 0 \\
+y = 11 \tab y_0 = 1 \tab y_1 = 1 \\
+n = 2 \\
+m = \lceil n/2 \rceil = 2/2 = 1 \\
+x = 2^{m}x_1 + x_0 = 2^{1}(0) + 1 \\
+y = 2^{m}y_1 + x_0 = 2^{1}(1) + 1 \\
+t_{1}^{17} = KM(x_1, y_1, m) = KM(0, 1, 1) = 0 \\
+t_{0}^{17} = KM(x_0, y_0, m) = KM(1, 1, 1) = 1 \\
+t_{10}^{17} = KM(x_1 + x_0, y_1 + y_0, m+1) = KM(1, 10, 2) = 2 \\
+RETURN \ 2^{2m}t_1^{16} + 2^{m}(t_{10}^{16} - t_1^{16} - t_0^{16}) + t_0^{16} = 2^{2}(0) + 2^{1}(2 - 1 - 0) + 1 = 3 = 11 \\
+$
+\\
+$
+t_{0}^{11} = t_{0}^{18} = t_{0}^{12} = KM(11, 00, 2)
+x = 11 \tab x_0 = 1 \tab x_1 = 1 \\
+y = 00 \tab y_0 = 0 \tab y_1 = 0 \\
+n = 2 \\
+m = \lceil n/2 \rceil = 2/2 = 1 \\
+x = 2^{m}x_1 + x_0 = 2^{1}(1) + 1 \\
+y = 2^{m}y_1 + x_0 = 2^{1}(0) + 0 \\
+t_{1}^{18} = KM(x_1, y_1, m) = KM(1, 0, 1) = 0 \\
+t_{0}^{18} = KM(x_0, y_0, m) = KM(1, 0, 1) = 0 \\
+t_{10}^{18} = KM(x_1 + x_0, y_1 + y_0, m+1) = KM(10, 00, 2) = 0 \\
+RETURN \ 2^{2m}t_1^{16} + 2^{m}(t_{10}^{16} - t_1^{16} - t_0^{16}) + t_0^{16} = 2^{2}(0) + 2^{1}(0 - 0 - 0) + 0 = 2 = 0 \\
+$
+\\
+$
+t_{10}^{12} = KM(10, 11, 2) \\
+x = 10 \tab x_0 = 0 \tab x_1 = 1 \\
+y = 11 \tab y_0 = 1 \tab y_1 = 1 \\
+n = 2 \\
+m = \lceil n/2 \rceil = 2/2 = 1 \\
+x = 2^{m}x_1 + x_0 = 2^{1}(1) + 0 \\
+y = 2^{m}y_1 + x_0 = 2^{1}(1) + 1 \\
+t_{1}^{19} = KM(x_1, y_1, m) = KM(1, 1, 1) = 1 \\
+t_{0}^{19} = KM(x_0, y_0, m) = KM(0, 1, 1) = 0 \\
+t_{10}^{19} = KM(x_1 + x_0, y_1 + y_0, m+1) = KM(01, 10, 2) = 2 \\
+RETURN \ 2^{2m}t_1^{19} + 2^{m}(t_{10}^{19} - t_1^{19} - t_0^{19}) + t_0^{19} = 2^{2}(2) + 2^{1}(2 - 1 - 0) + 0 = 6 = 110 
+$
+\pagebreak
+
+%%%%% PROBLEM 3 %%%%%
+\section{Problem 3}
+Solve the following recurrences by the Master theorem: \\
+(a) $T(n) = 3T(n/4)+1$ \\
+$
+a = 3 \\
+b = 4 \\
+f(n) = 1 = n^0 \\
+d = 0 \\
+k = log_{4}(3) \\
+d > k \rightarrow T(n)=O(n^0)=O(1) \\
+$
+(b) $T(n) = 5T(n/3)+n$ \\
+$
+a = 5 \\
+b = 3 \\
+f(n) = n \\
+d = 1 \\
+k = log_{3}(5) \\
+d < k \rightarrow T(n)=O(n^{log_{3}5}) \\
+$
+(c) $T(n) = 9T(n/3)+n^2$ \\
+$
+a = 9 \\
+b = 3 \\
+f(n) = n^2 \\
+d = 2 \\
+k = log_{3}(9) = 2 \\
+d = k \rightarrow T(n)=O(n^{2}logn)
+$
+\pagebreak
+
+%%%%% PROBLEM 4 %%%%%
+\section{Problem 4}
+We have a list $A$ of $n$ integers, for some $n=2^{k}-1$, each written in binary. Every number in the range 0 to $n$ is in the list exactly once, except for one. However, we cannot directly access the value of integer $A[i]$ (for any $i$); instead, we can only access the $j$'th bit of $i: A[i][j]$. Our goal is to find the missing number. \\
+Give an algorithm to find the missing integer that uses $O(n)$ bit accesses. Explain why your algorithm has the stated runtime. Note that a brute force solution that accesses every bit will take time $\Theta(nlogn)$. \\\\
+Input: list $A$ \\
+Output: some element $n$ from list $A$ \\
+We note that for a list of integers from 0 to $n$ (inclusive), for any bit position $j$ in $A[i][j]$, there are as many 0's as 1's when iterating through the $j$th position all integers 0 to $n$. Thus, in a list containing 0 to $n$ (inclusive), for any $j$th position, the number of 0's must equal the number of 1's. \\
+In a list of $n$ integers, with one integer missing, there must then be either a 0 or 1 bit in the $j$th position that is missing; the number of 0's and 1's in any $j$th position will not be equal, they will differ by 1. The missing 0 or 1 must be the $j$th bit of our missing integer. \\
+Algorithm: \\
+\tab
+For every $j$th bit of each integer in list A: \\
+\tab \tab Sum the number of 0 bits; \\
+\tab \tab Sum the number of 1 bits; \\
+\tab \tab The lesser sum denotes which bit we are missing, store it. \\
+After discovering the first missing bit, we can reduce the number of bits to iterate through for the next loop. If the first missing bit is 1, we only need to search through the remainder of the list that begins with 1, effectively halving the number of bits we must count after each iteration. \\
+Thus, our recursive formula would be $T(n) = T(n/2) + O(n)$ where $T(n/2)$ denotes a reduction of the number of bits we must iterate through per loop and $O(n)$ denotes the examining the initial $n$ bits to determine the first missing bit. By applying the Master Theorem, we find that $a = 1$, $b = 2$, $d = 1$, $k = log_{2}1 = 0$. Since $d > k$, $T(n) = O(n)$.
+
+
+
+\end{document}
